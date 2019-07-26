@@ -64,67 +64,55 @@ class DefaultContainer : public std::map<int, T>
 
 
 
-template <class ... Args1>
+template <typename T, T ... Args>
 class Matrix_5{
-    typedef Matrix_5 <T, dimensions-1, Container> itemType;
+
+    typedef Matrix_5 <T, Args ...> itemType;
+
+    std::map<T,itemType> m_matrix;
+
+public:
+    Matrix_5(){
+        std::cout << __PRETTY_FUNCTION__ << std::endl;
+    }
+    ~Matrix_5(){
+
+    }
+
+    itemType& operator[](int idx)
+    {
+        return m_matrix[idx];
+    }
+
+    const itemType& operator[](int idx) const
+    {
+        return m_matrix[idx];
+    }
+
 };
 
-template <class T,T DEFAULT_VALUE>
-class Matrix_5<T>{
+template <typename T,T DEF>
+class Matrix_5<T,DEF>{
+    typedef T itemType;
+    typedef std::map<itemType,itemType> holdType;
 
+    std::map<itemType,holdType> m_matrix;
+public:
+    Matrix_5(){
+        std::cout << __PRETTY_FUNCTION__ << std::endl;
+    }
+
+    holdType& operator[](int idx)
+    {
+        return m_matrix[idx];
+    }
+
+    const holdType& operator[](int idx) const
+    {
+        return m_matrix[idx];
+    }
 };
 
-//template <typename T,
-//          int dimensions,
-//          template <typename> class Container = DefaultContainer
-//          >
-//class Matrix_4{
-//    typedef Matrix_4<T, dimensions-1, Container> itemType;
-
-//    Container<itemType> m_data;
-
-//public:
-//    /**
-//     * This returns an item of the array m_data which is probably a matrix
-//     * of less dimensions that can be further accessed be the same operator
-//     * for resolving another dimension.
-//     */
-//    itemType& operator[](int idx)
-//    {
-//        return m_data[idx];
-//    }
-
-//    const itemType& operator[](int idx) const
-//    {
-//        return m_data[idx];
-//    }
-
-//};
-
-//template <typename T,
-//          template <typename> class Container
-//          >
-//class Matrix_4<T,1,Container>
-//{
-//    /**
-//     * Here we are defining an array of itemType which is defined to be T.
-//     * so we are actually defining an array of T.
-//     */
-//    typedef T itemType;
-
-//    Container<itemType> m_data;
-
-//public:
-//    itemType& operator[](int idx)
-//    {
-//        return m_data[idx];
-//    }
-
-//    const itemType& operator[](int idx) const
-//    {
-//        return m_data[idx];
-//    }
-//};
 
 
 //std::tie(i, b) = images.emplace(w, img);
@@ -133,18 +121,13 @@ class Matrix_5<T>{
 
 int main(int, char *[])
 {
-//    Matrix_4<int,2> matr;
-//    std::cout<< matr[0][0] << std::endl;
-//    matr[0][0] = 10;
-//    std::cout<< matr[0][0] << std::endl;
-//    Matrix_two<int, -4> matrix;
-//    std::cout << matrix[0][0] << std::endl;
-//    std::cout << matrix[1][0] << std::endl;
-//    std::cout << matrix[0][2] << std::endl;
-//    std::cout << matrix[0][10] << std::endl;
-//    std::cout << matrix.size() << std::endl;
+    Matrix_5<int,2> matr5;
+    std::cout << matr5[0][0] << std::endl;
+    matr5[0][0]= 10;
+    std::cout << matr5[0][0] << std::endl;
+    std::cout << matr5[0][1] << std::endl;
+    matr5[0][1]= 12;
+    std::cout << matr5[0][1] << std::endl;
 
-//    matrix[0][0] = 10;
-//    std::cout << matrix[0][0] << std::endl;
-
+    return 0;
 }
