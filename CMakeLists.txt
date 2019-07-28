@@ -14,6 +14,7 @@ find_package(Boost COMPONENTS unit_test_framework REQUIRED)
 
 
 include_directories(".")
+include_directories("./matrix")
 add_executable(${PROJECT_NAME} main.cpp)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
