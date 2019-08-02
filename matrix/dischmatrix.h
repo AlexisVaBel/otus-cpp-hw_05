@@ -12,7 +12,7 @@
 
 
 // "U volshebnika Sulejmana vse po chestnomu, bez obmana"
-// problem of white list is solved by this Wild Achtung, wait for some feedback.
+// problem of white list is solved by this Wild Achtung, waiting for some feedback.
 // cheers, Sulejman (A.Beljev)
 
 template <typename T, T DEFAULT, size_t DIMENSION = 2>
@@ -31,7 +31,7 @@ public:
     class Proxy {
         friend class DischMatrix;
     public:
-        Proxy(DischMatrix &matr, int index):_matr(matr),_idx(index),_dimension(0),_matrKey(""){}
+        Proxy(DischMatrix &matr, int index):_matr(matr),_idx(index),_dimension(0),_matrKey(""),_bValueOut(false){}
 
         Proxy & operator[] (int index){
 
@@ -70,9 +70,10 @@ public:
             return *this;
         }
 
-        operator matrix_value(){            
+        operator matrix_value(){
 
-            ++_dimension;
+            if(!_bValueOut) ++_dimension;
+            _bValueOut = true;
             if(DIMENSION != _dimension){
                 throw std::length_error("Access to non-available cell of matrix");
             }
@@ -89,6 +90,8 @@ public:
         int           _idx;
         int           _dimension;
         matrix_key    _matrKey;
+
+        bool          _bValueOut;
 
     };
 
@@ -153,6 +156,8 @@ public:
     }
 
 private:    
+
+
 
     matrix_templ m_matrix;
 };

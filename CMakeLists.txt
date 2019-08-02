@@ -13,9 +13,18 @@ find_package(Boost COMPONENTS unit_test_framework REQUIRED)
 
 
 
-include_directories(".")
-include_directories("./matrix")
-add_executable(${PROJECT_NAME} main.cpp)
+set (INC_DIRS "." "./matrix")
+set (SRC_LIST "main.cpp")
+set (SRC_LIST_TEST "./tests/test_starter")
+
+
+include_directories(${INC_DIRS})
+
+add_executable(${PROJECT_NAME} ${SRC_LIST})
+
+add_executable(${PROJECT_NAME}_test ${SRC_LIST_TEST})
+
+
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
         CXX_STANDARD 14
@@ -23,10 +32,17 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
         COMPILE_OPTIONS "-Wpedantic;-Wall;-Wextra"
         )
 
+set_target_properties(${PROJECT_NAME}_test PROPERTIES
+        COMPILE_DEFINITIONS BOOST_TEST_DYN_LINK
+        INCLUDE_DIRECTORIES ${Boost_INCLUDE_DIR} ${INC_DIRS}
 
-#    target_link_libraries(${PROJECT_NAME}_test
-#        ${Boost_LIBRARIES}
-#        )
+        )
+
+
+
+target_link_libraries(${PROJECT_NAME}_test
+    ${Boost_LIBRARIES}
+)
 
 
 install (TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin)
@@ -41,3 +57,18 @@ set(CPACK_PACKAGE_CONTACT alexisvabel@gmail.com)
 
 set(CPACK_DEBIAN_PACKAGE_SHLIDEPS ON)
 include(CPack)
+
+enable_testing()
+add_test(matrix_create_empty ${PROJECT_NAME}_test)
+
+add_test(matrix_create_default ${PROJECT_NAME}_test)
+
+add_test(matrix_fill_default ${PROJECT_NAME}_test)
+
+add_test(matrix_fill_some_check_some ${PROJECT_NAME}_test)
+
+add_test(matrix_fill_some_fill_default ${PROJECT_NAME}_test)
+
+add_test(matrix_with_idxs ${PROJECT_NAME}_test)
+
+
