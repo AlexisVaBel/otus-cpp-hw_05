@@ -24,7 +24,7 @@
            keep_history: true
            local-dir: $TRAVIS_BUILD_DIR/html
            on:
-            branch: master
+            branch: gh-pages
 
          - provider: script
            skip_cleanup: true
