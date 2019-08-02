@@ -12,6 +12,7 @@
          - sudo apt install libspdlog-dev -y
          - sudo apt install libboost-all-dev -y
  script:
+         - ls 
          - cmake .
          - cmake --build .
          - cmake --build . --target package

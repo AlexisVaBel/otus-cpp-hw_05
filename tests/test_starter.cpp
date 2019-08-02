@@ -2,7 +2,7 @@
 
 
 #include <boost/test/unit_test.hpp>
-#include "../matrix/dischmatrix.h"
+#include "../matrsrc/dischmatrix.h"
 
 static const int I_DEFAULT_MATRIX = -2;
 static const int I_SOMEV_MATRIX = 234;

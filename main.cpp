@@ -1,4 +1,4 @@
-#include "matrix/dischmatrix.h"
+#include "matrsrc/dischmatrix.h"
 
 #include <iostream>
 
