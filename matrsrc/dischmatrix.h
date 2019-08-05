@@ -12,13 +12,10 @@
 
 
 // "U volshebnika Sulejmana vse po chestnomu, bez obmana"
-// problem of white list is solved by this Wild Achtung, waiting for some feedback.
 // cheers, Sulejman (A.Beljev)
 
 template <typename T, T DEFAULT, size_t DIMENSION = 2>
 class DischMatrix {    
-
-//    using matrix_key        =  std::string;
     using matrix_key        =  std::array<std::size_t, DIMENSION>;
     using matrix_value      =  T;
     using matrix_templ      = std::map<matrix_key,matrix_value>;
@@ -32,15 +29,12 @@ public:
     class Proxy {
         friend class DischMatrix;
     public:
-        Proxy(DischMatrix &matr, int index):_matr(matr),_idx(index),_dimension(0),_matrKey(),_bValueOut(false){}
+        Proxy(DischMatrix &matr, int index):_matr(matr),_dimension(0){
+            _matrKey[_dimension++]=index;
+        }
 
-        Proxy & operator[] (int index){
-
-//            _matrKey.append(std::to_string(_idx)+"_");
-            _matrKey.append();
-            ++_dimension;
-            _idx = index;            
-
+        Proxy & operator[] (int index){                        
+            _matrKey[_dimension++]=index;
             return *this;
         }
 
@@ -48,18 +42,12 @@ public:
 
         template< class Perf>
         Proxy& operator=(Perf&& value) {
-
             auto fwdValue = std::forward<Perf>(value);
-
-            if(_idx != -1){
-                _matrKey.append(std::to_string(_idx));
-                ++_dimension;
-                _idx = -1;
-            }
 
             if(DIMENSION != _dimension){
                 throw std::length_error("Assign to non-available cell of matrix");
             }
+
             if(fwdValue != DEFAULT) {
                 _matr.m_matrix[_matrKey] = fwdValue;
             } else {                
@@ -72,14 +60,10 @@ public:
             return *this;
         }
 
-        operator matrix_value(){
-
-            if(!_bValueOut) ++_dimension;
-            _bValueOut = true;
+        operator matrix_value(){            
             if(DIMENSION != _dimension){
                 throw std::length_error("Access to non-available cell of matrix");
-            }
-            _matrKey.append(std::to_string(_idx));
+            }            
             auto it = _matr.m_matrix.find(_matrKey);
             if(it == _matr.m_matrix.end()){
                 return DEFAULT;
@@ -88,13 +72,9 @@ public:
         }
 
     private:
-        DischMatrix&  _matr;
-        int           _idx;
+        DischMatrix&  _matr;        
         int           _dimension;
         matrix_key    _matrKey;
-
-        bool          _bValueOut;
-
     };
 
     auto operator[](int index) {
@@ -114,10 +94,7 @@ public:
         Matrix_iterator(const R& pnt): m_pnt(pnt){}
 
         auto operator*(){
-            std::vector<std::string> results;
-            boost::algorithm::split(results, m_pnt->first, boost::is_any_of("_"));
-
-            auto tmp = a2t<std::string,DIMENSION>(results);
+            auto tmp = a2t<std::size_t, DIMENSION>(m_pnt->first);
             return  std::tuple_cat(tmp,std::make_tuple(m_pnt->second));
 
         }
@@ -136,11 +113,11 @@ public:
         template<typename Array, std::size_t... I>
         auto a2t_impl(Array& a, std::index_sequence<I...>)
         {
-            return std::make_tuple(std::stoi(a.at(I))...);
+            return std::make_tuple((a.at(I))...);
         }
 
         template<typename U, std::size_t N, typename Indices = std::make_index_sequence<N>>
-        auto a2t(const std::vector<U>& a)
+        auto a2t(const std::array<U,N>& a)
         {
             return a2t_impl(a, Indices{});
         }

@@ -30,7 +30,5 @@ int main(int, char *[])
         std::cout << std::endl;
     }
     std::cout << matrix.size() << std::endl;
-
-
     return 0;
 }
