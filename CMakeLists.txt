@@ -71,4 +71,10 @@ add_test(matrix_fill_some_fill_default ${PROJECT_NAME}_test)
 
 add_test(matrix_with_idxs ${PROJECT_NAME}_test)
 
+add_test(matrix_with_three ${PROJECT_NAME}_test)
+
+add_test(matrix_with_six ${PROJECT_NAME}_test)
+
+add_test(matrix_only_filled ${PROJECT_NAME}_test)
+
 

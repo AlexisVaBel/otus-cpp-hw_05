@@ -70,7 +70,7 @@ BOOST_AUTO_TEST_CASE(matrix_with_idxs){
     }
 }
 
-BOOST_AUTO_TEST_CASE(matrix_with__three){
+BOOST_AUTO_TEST_CASE(matrix_with_three){
     DischMatrix<int, I_DEFAULT_MATRIX,3> matrix;
     matrix[10][20][25]= I_SOMEV_MATRIX;
     auto a = matrix[10][20][25];
@@ -109,6 +109,29 @@ BOOST_AUTO_TEST_CASE(matrix_with_six){
         BOOST_CHECK(f == 2 );
         BOOST_CHECK(g == 1000);
         BOOST_CHECK(h == I_SOMEV_MATRIX);
+    }
+}
+
+BOOST_AUTO_TEST_CASE(matrix_only_filled){
+    DischMatrix<int, I_DEFAULT_MATRIX,3> matrix;
+
+
+    for(auto i=0; i < 10; ++i){
+        for(auto j=0; j < 10; ++j){
+            matrix[i][j][0] = (i % 2 == 0) && (j % 2 == 0) ? i+j+1 : I_DEFAULT_MATRIX;
+        };
+    };
+
+    for(auto c: matrix){
+        int a;
+        int b;
+        int d;
+        int e;
+        int ires;
+        std::tie(a, b, d, e) = c;
+        ires = (a % 2 == 0) && (b % 2 == 0) ? a+b+1 : I_DEFAULT_MATRIX;
+        BOOST_CHECK(e == ires);
+        BOOST_CHECK(e != I_DEFAULT_MATRIX);
     }
 }
 
