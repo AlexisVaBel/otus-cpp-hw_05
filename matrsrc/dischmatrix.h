@@ -18,7 +18,8 @@
 template <typename T, T DEFAULT, size_t DIMENSION = 2>
 class DischMatrix {    
 
-    using matrix_key        =  std::string;
+//    using matrix_key        =  std::string;
+    using matrix_key        =  std::array<std::size_t, DIMENSION>;
     using matrix_value      =  T;
     using matrix_templ      = std::map<matrix_key,matrix_value>;
 
@@ -31,11 +32,12 @@ public:
     class Proxy {
         friend class DischMatrix;
     public:
-        Proxy(DischMatrix &matr, int index):_matr(matr),_idx(index),_dimension(0),_matrKey(""),_bValueOut(false){}
+        Proxy(DischMatrix &matr, int index):_matr(matr),_idx(index),_dimension(0),_matrKey(),_bValueOut(false){}
 
         Proxy & operator[] (int index){
 
-            _matrKey.append(std::to_string(_idx)+"_");
+//            _matrKey.append(std::to_string(_idx)+"_");
+            _matrKey.append();
             ++_dimension;
             _idx = index;            
 
